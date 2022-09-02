@@ -41,6 +41,8 @@ dependencies:
   cached_network_image: ^3.2.1
   drawerbehavior: ^2.2.2
   flutter_zoom_drawer: ^3.0.3
+  smooth_page_indicator: ^1.0.0+2
+
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +73,9 @@ flutter:
    - images/300769377_1455199998279886_2652025127988417816_n.jpg
    - images/menus.png
    - images/food.png
+   - images/download.jpg
+   - images/images.jpg
+   - images/images-1.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
