@@ -99,7 +99,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             GestureDetector(
               onTap: (){
                 if (isLast) {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const SelectGovernorateScreen()),
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> SelectGovernorateScreen('')),
                           (route)=>false
                   );
 
@@ -126,17 +126,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
 
             GestureDetector(
-              onTap: () {
-                if (isLast) {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const SelectGovernorateScreen()),
-                          (route)=>false
-                  );
+              onTap: (){
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>SelectGovernorateScreen('')),
+                        (route)=>false
+                );
 
-                } else {
-                  boardController.nextPage(
-                      duration: const Duration(milliseconds: 750),
-                      curve: Curves.fastLinearToSlowEaseIn);
-                }
               },
               child: Container(
                 width: double.infinity,

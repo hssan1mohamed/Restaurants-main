@@ -1,23 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled2/home/home_screen.dart';
 
 
-class SelectGovernorateScreen extends StatelessWidget {
-  const SelectGovernorateScreen({Key? key}) : super(key: key);
+class SelectGovernorateScreen extends StatefulWidget {
+  String city;
+   SelectGovernorateScreen(this.city,{Key? key}) : super(key: key);
 
   @override
+  State<SelectGovernorateScreen> createState() => _SelectGovernorateScreenState();
+}
+
+class _SelectGovernorateScreenState extends State<SelectGovernorateScreen> {
+  String x='';
+  List cities=['الإسكندرية','أسوان','أسيوط','البحيرة','	بني سويف',
+    'القاهرة','الدقهلية','دمياط'
+    ,'الفيوم','الجيزة','الإسماعيلية','	الأقصر','المنيا','	المنوفية','بور سعيد','قنا','الغردقة','سوهاج','السويس',];
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar:AppBar(
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text('Engez',style: TextStyle(
-          color: Colors.red,
+        title:  Text('Engez',style: TextStyle(
+          color: Colors.red.shade900,
           fontWeight: FontWeight.bold,
         ),),
       ),
-      body: Column(
+      body: ListView(
 
         children: [
           SizedBox(height: 20,),
@@ -30,126 +44,55 @@ class SelectGovernorateScreen extends StatelessWidget {
             ),
             ),
           ),
-          ListView(
-            shrinkWrap: true,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 80,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.red[50],
-                        ),
-                        child: const Center(child: Text('القاهرة',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-
-                        ),)),
-                      ),
+Center(child: Text(widget.city,style: TextStyle(fontSize: 18)),),
+          ListView.builder(
+            physics: BouncingScrollPhysics(),
+            shrinkWrap: true,  itemCount: cities.length,
+              itemBuilder:(context,i){
+                return  InkWell(
+                  onTap: (){
+                    setState(() {
+                      x=cities[i];
+                    });
+                  },
+                  child: Card(
+                    color:widget.city==''?x==cities[i]?Colors.white: Colors.red.shade50:widget.city==cities[i]?Colors.white: Colors.red.shade50,
+                    child: ListTile(
+                      title: Center(child: Text(cities[i],style: TextStyle(fontSize:x==cities[i]?30:18,color: x==cities[i]?Colors.red:null ),)),
                     ),
-                    SizedBox(width: 15,),
-                    Expanded(
-                      child: Container(
-                        height: 80,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.red[50],
-                        ),
-                        child: const Center(child: Text('الجيزة',style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
+        ),
 
-                        ),)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 80,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.red[50],
-                        ),
-                        child: const Center(child: Text('الاسكندرية',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-
-                        ),)),
-                      ),
-                    ),
-                    SizedBox(width: 15,),
-                    Expanded(
-                      child: Container(
-                        height: 80,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.red[50],
-                        ),
-                        child: const Center(child: Text('اسيوط',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-
-                        ),)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 80,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.red[50],
-                        ),
-                        child: const Center(child: Text('بورسعيد',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-
-                        ),)),
-                      ),
-                    ),
-                    SizedBox(width: 15,),
-                    Expanded(
-                      child: Container(
-                        height: 80,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.red[50],
-                        ),
-                        child: const Center(child: Text('قنا',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-
-                        ),)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
-              onTap:(){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=> const Home_screen()));
-              } ,
+              onTap:()async{
+                if(widget.city==''){
+    if(x==''){
+    Fluttertoast.showToast(msg: 'يجب اختيار محافظة');
+    }else{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('city', x);
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+    builder: (context)=>  Home_screen(x)));
+    }
+    }else{
+                  if(x==''){
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setString('city', widget.city);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context)=>  Home_screen(widget.city)));
+                  }else{
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setString('city', x);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context)=>  Home_screen(x)));
+                  }
+                }
+                }
+                 ,
               child: Container(
                   width:  double.infinity,
                   height: 40,

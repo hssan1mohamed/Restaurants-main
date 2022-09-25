@@ -2,12 +2,17 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:untitled2/screens/cafe/cafe.dart';
 import 'package:untitled2/screens/on_boarding/on_boarding_screen.dart';
+import 'package:untitled2/screens/resturants/resturants_screen.dart';
+import 'package:untitled2/screens/sweets/sweets_screen.dart';
 
 import '../../../home/home_screen.dart';
+import '../../screens/select_Governorates/selectGovernorates.dart';
 
 class Drawer_Screen extends StatefulWidget {
-  const Drawer_Screen({Key? key}) : super(key: key);
+  String city;
+  Drawer_Screen(this.city,{Key? key}) : super(key: key);
 
   @override
   State<Drawer_Screen> createState() => _Drawer_ScreenState();
@@ -38,9 +43,15 @@ class _Drawer_ScreenState extends State<Drawer_Screen> {
                   flex: 2,
                   child: Column(
                 children: [
-                  const Text('Engez',
-                      style: TextStyle(color: Colors.red, fontSize: 25)),
+                   Text('Engez',
+                      style: TextStyle(color: Colors.red.shade900, fontSize: 25,fontWeight: FontWeight.bold)),
                   const SizedBox(height: 25),
+
+                  GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ResturantsScreen(widget.city)));
+                      },
+                      child: list('المطاعم')),
                   const Padding(
                     padding: EdgeInsets.only(
                         right: 10,
@@ -50,7 +61,12 @@ class _Drawer_ScreenState extends State<Drawer_Screen> {
                       color: Colors.grey,
                     ),
                   ),
-                  list('الصفحة الرئسية'),
+                  GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder:(context)=>
+                        SweetsScreen(widget.city)));
+                      },
+                      child: list('محلات الحلويات ')),
                   const Padding(
                     padding: EdgeInsets.only(
                         right: 10,
@@ -60,7 +76,12 @@ class _Drawer_ScreenState extends State<Drawer_Screen> {
                       color: Colors.grey,
                     ),
                   ),
-                  list('المطاعم'),
+                  GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                        CafeScreen(widget.city)));
+                      },
+                      child: list('الكافيهات')),
                   const Padding(
                     padding: EdgeInsets.only(
                         right: 10,
@@ -70,36 +91,14 @@ class _Drawer_ScreenState extends State<Drawer_Screen> {
                       color: Colors.grey,
                     ),
                   ),
-                  list('محلات الحلويات '),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                        right: 10,
-                        left: 10
-                    ),
-                    child: Divider(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  list('الكافيهات'),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                        right: 10,
-                        left: 10
-                    ),
-                    child: Divider(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  list('الاعدادات'),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                        right: 10,
-                        left: 10
-                    ),
-                    child: Divider(
-                      color: Colors.grey,
-                    ),
-                  ),
+                  GestureDetector(
+                      onTap: (){
+                        Navigator.pop(context);
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+                        SelectGovernorateScreen(widget.city)));
+                      },
+                      child: list('الاعدادات')),
+
                 ],
               )),
 
@@ -125,7 +124,9 @@ class _Drawer_ScreenState extends State<Drawer_Screen> {
     return ListTile(
         leading: Text(
       txt,
-      style: const TextStyle(fontSize: 22, color: Colors.red),
+      style:  TextStyle(fontSize: 22, color: Colors.red.shade900,
+      fontWeight: FontWeight.bold
+      ),
     ));
   }
 }

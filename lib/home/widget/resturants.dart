@@ -1,7 +1,8 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-Widget resturants(){
+Widget resturants(String name,String img, ){
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child:Stack(
@@ -9,23 +10,31 @@ Widget resturants(){
         Container(
         width: 250,
           height: 180,
-          decoration: BoxDecoration(
+          child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            image: const DecorationImage(
-              image: const AssetImage('images/300062524_614913610000426_2772987590844193481_n.jpg'),
-              fit: BoxFit.fill
-            )
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                CachedNetworkImage(
+                  imageUrl: img,
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) =>
+                      Center(child: Image.asset('images/loading.gif',)),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+              ],
+            ),
           ),
         ),
         Opacity(
-          opacity: 0.7,
+          opacity: 0.9,
           child: Container(
             margin: const EdgeInsets.only(
-              top: 90,
+              top: 120,
               right: 5
 
             ),
-            height: 80,
+            height: 50,
             width: 240,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -36,34 +45,19 @@ Widget resturants(){
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
-                  children: const [
-                    Text('حضرموت عنتر',
+                  children:
+                  [
+                    Text(name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
-                      color: Colors.red
+                      color: Colors.red.shade900
                     ),
                     ),
-                    Text('(زهراء المعادي)',
-                    style: TextStyle(
-                      color: Colors.black
-                    ),
-                    )
+                    const Spacer(),
+                    Icon(Icons.arrow_forward_ios,color: Colors.blue,)
                   ],
                 ),
-                Row(
-                  children:  [
-                    const Icon(Icons.star_rate,size: 20,color: Colors.green,),
-                    const Icon(Icons.star_rate,size: 20,color: Colors.green,),
-                    const Icon(Icons.star_rate,size: 20,color: Colors.green,),
-                    const Icon(Icons.star_rate,size: 20,color: Colors.green,),
-                    const Spacer(),
-                    IconButton(onPressed: (){},
-                        icon: const Icon(Icons.arrow_forward_ios,color: Colors.blue,))
-                  ],
-                )
-                
-                
               ],
             ),
           ),

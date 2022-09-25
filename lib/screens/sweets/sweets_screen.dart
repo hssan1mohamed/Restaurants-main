@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:untitled2/screens/resturants/resturants_screen.dart';
+
+import '../../widget/stream_widget.dart';
 
 
-class SweetsScreen extends StatelessWidget {
-   SweetsScreen({Key? key}) : super(key: key);
+class SweetsScreen extends StatefulWidget {
+  String city;
+  SweetsScreen(this.city,{Key? key}) : super(key: key);
 
+  @override
+  State<SweetsScreen> createState() => _SweetsScreenState();
+}
+
+class _SweetsScreenState extends State<SweetsScreen> {
   final FocusNode _textFocusNode = FocusNode();
+
   TextEditingController? _textEditingController = TextEditingController();
+
+String _value='';
 
   @override
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios,color: Colors.red.shade900,),
+          ),
           elevation: 0,
           backgroundColor: Colors.white,
           title: Text('Engez',
@@ -36,88 +55,20 @@ class SweetsScreen extends StatelessWidget {
                       errorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
                       prefixIcon: Icon(Icons.search),
-                      hintText:  'ابحث هنا ... ',
+                      hintText: 'ابحث هنا فى جميع المحفظات ... ',
                       contentPadding: EdgeInsets.all(8)),
-
+onChanged: (v){
+         setState(() {
+           _value=v.toString();
+         });           
+},
                 ),
               ),
             ),
 
           ),
         ),
-        body: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: 5,
-            itemBuilder: (context,i){
-              return items();
-            }
-        )
+        body:stream('Sweets', _value,widget.city)
     );
   }
-}
-Widget items(){
-  return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(
-            top: 10,
-            right: 12,
-            left: 12
-        ),
-        child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],      color: Colors.white,
-            ),
-            child:Row(
-              children: [
-                Container(
-                  height: 130,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    //color: Colors.red,
-                      borderRadius:BorderRadius.circular(15),
-                      image: DecorationImage(
-                          image: AssetImage('images/food.png'),
-                          fit: BoxFit.cover
-                      )
-                  ),
-
-                ),
-                SizedBox(width: 5,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    Row(
-                      children: [
-                        Text('بلبن',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[900]
-                          ),),
-                        Text('(وسط البلد ) ')
-                      ],
-                    ),
-                    Text('رز بلبن - حلويات',style: TextStyle(
-                        color: Colors.red
-                    ),)
-
-
-                  ],
-                ),
-                Spacer(),
-                IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios))
-              ],
-
-            )
-        ),
-      ));
 }
